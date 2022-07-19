@@ -1,0 +1,21 @@
+{
+  "name": "message-server",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.0.6",
+    "@types/ws": "^8.5.3",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "bufferutil": "^4.0.6",
+    "utf-8-validate": "^5.0.9",
+    "ws": "^8.8.1"
+  }
+}
