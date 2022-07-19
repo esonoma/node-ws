@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client</title>
+  </head>
+  <body>
+    <h2>发送消息</h2>
+    <label for="m">
+      <input type="text" id="m" />
+    </label>
+    <button type="button" id="sendBtn">发送</button>
+
+    <h2>接受消息</h2>
+    <h4 class="connect-status">Pending connection...</h4>
+    <ul class="message-container"></ul>
+  </body>
+
+  <script>
+    const eventSource = new EventSource("http://localhost:8900/evt");
+    eventSource.onopen = (event) => {
+      document.querySelector(".connect-status").innerHTML =
+        "Connected to server";
+    };
+    eventSource.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      const messageNode = document.createElement("li");
+      if (message.mode === "msg") {
+        messageNode.setAttribute("style", "color: red");
+      }
+      messageNode.innerHTML = `<strong>${
+        message?.mode
+      }</strong>: ${decodeURIComponent(message.message)}`;
+      document.querySelector(".message-container").appendChild(messageNode);
+    };
+
+    sendMessage();
+
+    function sendMessage() {
+      const messageInput = document.querySelector("#m");
+      const sendBtn = document.querySelector("#sendBtn");
+
+      sendBtn.addEventListener("click", () => {
+        fetch(
+          "http://localhost:8900/msg" + "?message=" + messageInput.value
+        ).then((response) => {
+          console.log(response);
+        });
+      });
+    }
+  </script>
+</html>
